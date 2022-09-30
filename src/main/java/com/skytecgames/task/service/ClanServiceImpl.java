@@ -14,13 +14,14 @@ public class ClanServiceImpl implements ClanService {
         if (instance == null) {
             instance = new ClanServiceImpl();
         }
+
         return instance;
     }
 
     @Override
     public Clan getClan(long clanId) {
         MySQLConnectionPool pool = new MySQLConnectionPool();
-        String sql = "SELECT idClan, name, gold FROM clan WHERE idClan = " + clanId;
+        String sql = "SELECT * FROM clan WHERE idClan = " + clanId;
         Clan clan = null;
         try (Connection conn = pool.getConnection()) {
             try (Statement statement = conn.createStatement()) {
@@ -44,7 +45,7 @@ public class ClanServiceImpl implements ClanService {
     public boolean save(Clan clan) {
         Clan clanUpdate = null;
         MySQLConnectionPool pool = new MySQLConnectionPool();
-        String sql = "SELECT idClan, name, gold FROM clan WHERE name = '" + clan.getName() + "'";
+        String sql = "SELECT * FROM clan WHERE name = '" + clan.getName() + "'";
         try (Connection conn = pool.getConnection()) {
             try (Statement statement = conn.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(sql);
@@ -65,13 +66,14 @@ public class ClanServiceImpl implements ClanService {
                 updateStatement.setInt(3, clanUpdate.getGold());
                 updateStatement.setLong(4, clanUpdate.getId());
                 updateStatement.executeUpdate();
-
+                return true;
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+                return false;
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

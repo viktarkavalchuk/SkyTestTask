@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     public boolean save(User user) {
         User userUpdate = null;
         MySQLConnectionPool pool = new MySQLConnectionPool();
-        String sql = "SELECT idUser, name, userGold FROM user WHERE name = '" + user.getName() + "'";
+        String sql = "SELECT * FROM user WHERE name = '" + user.getName() + "'";
         try (Connection conn = pool.getConnection()) {
             try (Statement statement = conn.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(sql);

@@ -27,7 +27,7 @@ public class TaskServiceImpl implements TaskService { // какой-то сер�
         this.clans = ClanServiceImpl.getInstance();
     }
 
-    public void completeTask(long clanId, long taskId) {
+    public boolean completeTask(long clanId, long taskId) {
         TaskService tasks = TaskServiceImpl.getInstance();
         if (getTask(taskId).execute()) {
             System.out.println("Quest started");
@@ -35,13 +35,15 @@ public class TaskServiceImpl implements TaskService { // какой-то сер�
             clan.setGold(clan.getGold() + tasks.getTask(taskId).getPrice());
             clans.save(clan);
             System.out.println("Quest " + tasks.getTask(taskId).getTaskName() +  " completed successfully");
-        }
+            return true;
+        } else
+            return false;
     }
 
     @Override
     public Task getTask(long taskId) {
         MySQLConnectionPool pool = new MySQLConnectionPool();
-        String sql = "SELECT idTask, taskName, price FROM task WHERE idTask = " + taskId;
+        String sql = "SELECT * FROM task WHERE idTask = " + taskId;
         Task task = null;
         try (Connection conn = pool.getConnection()) {
             try (Statement statement = conn.createStatement()) {

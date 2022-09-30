@@ -1,9 +1,9 @@
 package com.skytecgames.task.model;
 
 public class Task {
-    private long taskId;
-    private String taskName;
-    private int price;
+    private long taskId; // id квеста
+    private String taskName; // Описание квеста
+    private int price; // Добыча
 
     public Task(long taskId, String taskName, int price) {
         this.taskId = taskId;
