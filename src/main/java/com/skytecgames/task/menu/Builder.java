@@ -35,6 +35,9 @@ public class Builder {
         sendingMenu.addMenuItem(new MenuItem("2 - Add Gold To Clan",
                 new AddGoldToClanAction(),
                 sendingMenu));
+        sendingMenu.addMenuItem(new MenuItem("3 - Clan Payment",
+                new ClanPaymentAction(),
+                sendingMenu));
         return sendingMenu;
     }
 
@@ -51,6 +54,9 @@ public class Builder {
                 transactionMenu));
         transactionMenu.addMenuItem(new MenuItem("3 - Get All Records By Clan",
                 new GetTransactionHistoryByClanAction(),
+                transactionMenu));
+        transactionMenu.addMenuItem(new MenuItem("4 - Get All Records By Reason",
+                new GetTransactionHistoryByReasonAction(),
                 transactionMenu));
         return transactionMenu;
     }

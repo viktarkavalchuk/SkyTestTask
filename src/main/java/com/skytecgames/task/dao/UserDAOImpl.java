@@ -1,27 +1,23 @@
-package com.skytecgames.task.service;
+package com.skytecgames.task.dao;
 
+import com.skytecgames.task.dao.interfaces.ClanDAO;
+import com.skytecgames.task.dao.interfaces.UserDAO;
 import com.skytecgames.task.model.Clan;
 import com.skytecgames.task.model.User;
-import com.skytecgames.task.service.interfaces.UserService;
 import com.skytecgames.task.utils.MySQLConnectionPool;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class UserServiceImpl implements UserService {
+public class UserDAOImpl implements UserDAO {
+    private ClanDAO clanDAO = ClanDAOImpl.getInstance();
+    private static UserDAOImpl instance;
 
-    private static UserServiceImpl instance;
-    private ClanServiceImpl clanService;
-
-    public static UserServiceImpl getInstance() {
+    public static UserDAOImpl getInstance() {
         if (instance == null) {
-            instance = new UserServiceImpl();
+            instance = new UserDAOImpl();
         }
         return instance;
-    }
-
-    public UserServiceImpl() {
-        this.clanService = ClanServiceImpl.getInstance();
     }
 
     @Override
@@ -39,11 +35,11 @@ public class UserServiceImpl implements UserService {
                 while (resultSet.next()) {
                     Long idUser = resultSet.getLong(1);
                     String name = resultSet.getString(2);
-                    Integer userGold = resultSet.getInt(3);
+                    int userGold = resultSet.getInt(3);
                     int clanId = resultSet.getInt(4);
 
                     user = new User(idUser, name, userGold);
-                    Clan clan = clanService.getClan(clanId);
+                    Clan clan = clanDAO.getClan(clanId);
                     clans.add(clan);
                     user.setClan(clans);
                 }
@@ -57,7 +53,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean save(User user) {
+    public synchronized boolean save(User user) {
         User userUpdate = null;
         MySQLConnectionPool pool = new MySQLConnectionPool();
         String sql = "SELECT * FROM user WHERE name = '" + user.getName() + "'";

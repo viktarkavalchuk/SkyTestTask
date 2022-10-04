@@ -1,16 +1,16 @@
 package com.skytecgames.task.menu.action;
 
-import com.skytecgames.task.service.TaskServiceImpl;
-import com.skytecgames.task.service.TransactionServiceImpl;
-import com.skytecgames.task.service.interfaces.TaskService;
-import com.skytecgames.task.service.interfaces.TransactionService;
+import com.skytecgames.task.service.ClanService;
+import com.skytecgames.task.service.TaskService;
+import com.skytecgames.task.service.TransactionService;
 
 import java.util.Scanner;
 
 public class CompleteTaskAction implements IAction {
 
-    private TaskService taskService = TaskServiceImpl.getInstance();
-    private TransactionService transactionService = TransactionServiceImpl.getInstance();
+    private ClanService clanService = ClanService.getInstance();
+    private TaskService taskService = TaskService.getInstance();
+    private TransactionService transactionService = TransactionService.getInstance();
 
     @Override
     public void execute() {
@@ -24,10 +24,11 @@ public class CompleteTaskAction implements IAction {
         int taskId = 0;
         if (scanner.hasNextInt()) {
             taskId = scanner.nextInt();
+            int goldBefore = clanService.getClan(clanId).getGold();
             if (taskService.completeTask(clanId, taskId)) {
-                transactionService.updateTransactions(clanId, taskService.getTask(taskId).getPrice());
+                transactionService.logTransaction(null, (long) taskId, clanId, goldBefore,
+                        clanService.getClan(clanId).getGold(),2);
             }
-
         }
     }
 }

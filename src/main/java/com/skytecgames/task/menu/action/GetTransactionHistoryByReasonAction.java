@@ -6,21 +6,20 @@ import com.skytecgames.task.service.TransactionService;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GetTransactionHistoryByClanAction implements IAction {
-
+public class GetTransactionHistoryByReasonAction implements IAction {
     private TransactionService transactionService = TransactionService.getInstance();
     @Override
     public void execute() throws Exception {
-        System.out.println("Enter clan ID");
-        int clanId = 0;
+        System.out.println("Enter reason ID");
+        int reasonId = 0;
         Scanner scanner = new Scanner(System.in);
         if (scanner.hasNextInt()) {
-            clanId = scanner.nextInt();
+            reasonId = scanner.nextInt();
         }
-        ArrayList<Transaction> list = transactionService.getTransactionsByClan(clanId);
+        ArrayList<Transaction> list = transactionService.getTransactionsByReason(reasonId);
         if (!list.isEmpty()) {
             list.stream()
-                    .forEach(x-> System.out.println("Date of transfer: " + x.getDate()
+                    .forEach(x -> System.out.println("Date of transfer: " + x.getDate()
                             + "; User ID: " + x.getUserId()
                             + "; Task ID: " + x.getTaskId()
                             + "; Clan ID: " + x.getClanId()
@@ -28,7 +27,7 @@ public class GetTransactionHistoryByClanAction implements IAction {
                             + "; Gold after transaction: " + x.getGoldAfter()
                             + "; Reason: " + x.getReason() + ";"));
         } else {
-            System.out.println("No entries by clan");
+            System.out.println("No entries by reason");
         }
     }
 }

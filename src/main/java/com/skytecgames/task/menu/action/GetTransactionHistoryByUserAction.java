@@ -1,14 +1,13 @@
 package com.skytecgames.task.menu.action;
 
 import com.skytecgames.task.model.Transaction;
-import com.skytecgames.task.service.TransactionServiceImpl;
-import com.skytecgames.task.service.interfaces.TransactionService;
+import com.skytecgames.task.service.TransactionService;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GetTransactionHistoryByUserAction implements IAction {
-    private TransactionService transactionService = TransactionServiceImpl.getInstance();
+    private TransactionService transactionService = TransactionService.getInstance();
     @Override
     public void execute() throws Exception {
         System.out.println("Enter user ID");
@@ -22,8 +21,11 @@ public class GetTransactionHistoryByUserAction implements IAction {
             list.stream()
                     .forEach(x -> System.out.println("Date of transfer: " + x.getDate()
                             + "; User ID: " + x.getUserId()
+                            + "; Task ID: " + x.getTaskId()
                             + "; Clan ID: " + x.getClanId()
-                            + "; Gold: " + x.getGold() + ";"));
+                            + "; Gold before transaction: " + x.getGoldBefore()
+                            + "; Gold after transaction: " + x.getGoldAfter()
+                            + "; Reason: " + x.getReason() + ";"));
         } else {
             System.out.println("No entries by user");
         }

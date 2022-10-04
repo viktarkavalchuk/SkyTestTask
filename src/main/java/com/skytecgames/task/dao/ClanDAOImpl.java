@@ -1,20 +1,18 @@
-package com.skytecgames.task.service;
+package com.skytecgames.task.dao;
 
+import com.skytecgames.task.dao.interfaces.ClanDAO;
 import com.skytecgames.task.model.Clan;
-import com.skytecgames.task.service.interfaces.ClanService;
 import com.skytecgames.task.utils.MySQLConnectionPool;
 
 import java.sql.*;
 
-public class ClanServiceImpl implements ClanService {
+public class ClanDAOImpl implements ClanDAO {
+    private static ClanDAOImpl instance;
 
-    private static ClanServiceImpl instance;
-
-    public static ClanServiceImpl getInstance() {
+    public static ClanDAOImpl getInstance() {
         if (instance == null) {
-            instance = new ClanServiceImpl();
+            instance = new ClanDAOImpl();
         }
-
         return instance;
     }
 
@@ -29,7 +27,7 @@ public class ClanServiceImpl implements ClanService {
                 while (resultSet.next()) {
                     Long idClan = resultSet.getLong(1);
                     String name = resultSet.getString(2);
-                    Integer gold = resultSet.getInt(3);
+                    int gold = resultSet.getInt(3);
                     clan = new Clan(idClan, name, gold);
                 }
             } catch (SQLException throwables) {
@@ -42,7 +40,7 @@ public class ClanServiceImpl implements ClanService {
     }
 
     @Override
-    public boolean save(Clan clan) {
+    public synchronized boolean save(Clan clan) {
         Clan clanUpdate = null;
         MySQLConnectionPool pool = new MySQLConnectionPool();
         String sql = "SELECT * FROM clan WHERE name = '" + clan.getName() + "'";
@@ -52,7 +50,7 @@ public class ClanServiceImpl implements ClanService {
                 while (resultSet.next()) {
                     Long idClan = resultSet.getLong(1);
                     String name = resultSet.getString(2);
-                    Integer gold = resultSet.getInt(3);
+                    int gold = resultSet.getInt(3);
                     clanUpdate = new Clan(idClan, name, gold);
                 }
                 clanUpdate.setName(clan.getName());
