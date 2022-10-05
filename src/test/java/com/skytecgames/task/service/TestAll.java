@@ -10,9 +10,9 @@ import java.util.concurrent.Executors;
 
 import static org.junit.Assert.assertEquals;
 
-public class UserServiceTest {
-
+public class TestAll {
     private ClanService clanService = ClanService.getInstance();
+    private TaskService taskService = TaskService.getInstance();
     private UserService userService = UserService.getInstance();
 
     @Before
@@ -22,21 +22,26 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_userService_when10Threads_then10Gold() throws Exception {
-        int numberOfThreads = 10;
+    public void test_taskService_when20Threads_then100Gold() throws Exception {
+        int numberOfThreads = 20;
         ExecutorService service = Executors.newFixedThreadPool(10);
         CountDownLatch latch = new CountDownLatch(numberOfThreads);
         for (int i = 0; i < numberOfThreads; i++) {
             service.submit(() -> {
                 try {
+                    taskService.completeTask(1, 1);
+                    taskService.completeTask(3, 1);
                     userService.addGoldToClan(1, 4, 1);
+                    clanService.paymentByClan(3, 1);
                 } catch (Exception e) {
-                    System.out.println("UserServiceTest exception" + e);
+                    System.out.println(e);
                 }
                 latch.countDown();
             });
         }
         latch.await();
-        assertEquals(numberOfThreads, clanService.getClan(4).getGold());
+        assertEquals(numberOfThreads, clanService.getClan(1).getGold());
+        assertEquals(numberOfThreads, clanService.getClan(1).getGold());
+        assertEquals(100, clanService.getClan(3).getGold());
     }
 }
