@@ -211,10 +211,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `SkytecGames`;
-INSERT INTO `SkytecGames`.`TransactionHistory` (`idTransactionHistory`, `date`, `userId`, `taskId`, `clanId`, `goldBefore`, `goldAfter`, `reason`) VALUES (1, '2022-01-20', 1, NULL, 4, 150, 250, 1);
-INSERT INTO `SkytecGames`.`TransactionHistory` (`idTransactionHistory`, `date`, `userId`, `taskId`, `clanId`, `goldBefore`, `goldAfter`, `reason`) VALUES (2, '2022-01-20', 2, NULL, 4, 5000, 12000, 2);
-INSERT INTO `SkytecGames`.`TransactionHistory` (`idTransactionHistory`, `date`, `userId`, `taskId`, `clanId`, `goldBefore`, `goldAfter`, `reason`) VALUES (3, '2022-01-20', 3, NULL, 3, 500, 7500, 1);
-INSERT INTO `SkytecGames`.`TransactionHistory` (`idTransactionHistory`, `date`, `userId`, `taskId`, `clanId`, `goldBefore`, `goldAfter`, `reason`) VALUES (4, '2022-01-20', NULL, 2, 1, 200, 201, 1);
+INSERT INTO `SkytecGames`.`TransactionHistory` (`idTransactionHistory`, `date`, `userId`, `taskId`, `clanId`, `goldBefore`, `goldAfter`, `reason`) VALUES (1, '2022-01-20 08:46:24', 1, NULL, 4, 150, 250, 1);
+INSERT INTO `SkytecGames`.`TransactionHistory` (`idTransactionHistory`, `date`, `userId`, `taskId`, `clanId`, `goldBefore`, `goldAfter`, `reason`) VALUES (2, '2022-09-30 18:46:24', 2, NULL, 4, 5000, 12000, 2);
+INSERT INTO `SkytecGames`.`TransactionHistory` (`idTransactionHistory`, `date`, `userId`, `taskId`, `clanId`, `goldBefore`, `goldAfter`, `reason`) VALUES (3, '2022-10-03 13:56:13', 3, NULL, 3, 500, 7500, 1);
+INSERT INTO `SkytecGames`.`TransactionHistory` (`idTransactionHistory`, `date`, `userId`, `taskId`, `clanId`, `goldBefore`, `goldAfter`, `reason`) VALUES (4, '2022-10-04 16:32:23', NULL, 2, 1, 200, 201, 1);
 
 COMMIT;
 

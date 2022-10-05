@@ -1,19 +1,18 @@
 package com.skytecgames.task.utils;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.Stack;
 
 public class MySQLConnectionPool {
-    private final String driverName = "com.mysql.cj.jdbc.Driver";
-//    private final String connectionString = "jdbc:mysql://localhost:3306/hotel";
-//    private final String login = "root";
-//    private final String password = "root";
 
+    private String driverName;
     private String databaseUrl;
     private String userName;
     private String password;
@@ -27,12 +26,18 @@ public class MySQLConnectionPool {
 
 
     public MySQLConnectionPool() {
-        this.databaseUrl = "jdbc:mysql://localhost:3306/skytecgames";
-        this.userName = "root";
-        this.password = "root";
-        this.maxPoolSize = 100;
+        Properties properties = new Properties();
+        try {
+            properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("datasource.properties"));
+            this.driverName = properties.getProperty("jdbc.driver");
+            this.databaseUrl = properties.getProperty("jdbc.url");
+            this.userName = properties.getProperty("jdbc.username");
+            this.password = properties.getProperty("jdbc.password");
+            this.maxPoolSize = 100;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
 
     public synchronized Connection getConnection() {
         Connection conn = null;
@@ -68,7 +73,6 @@ public class MySQLConnectionPool {
         return conn;
     }
 
-
     public synchronized void returnConnection(Connection conn)
             throws SQLException {
         if (conn == null) {
@@ -92,13 +96,11 @@ public class MySQLConnectionPool {
         return conn;
     }
 
-
     private Connection createNewConnection() throws SQLException {
         Connection conn = null;
         conn = DriverManager.getConnection(databaseUrl, userName, password);
         return conn;
     }
-
 
     private Connection getConnectionFromPool() {
         Connection conn = null;
@@ -108,7 +110,6 @@ public class MySQLConnectionPool {
         }
         return conn;
     }
-
 
     private Connection makeAvailable(Connection conn) throws SQLException {
         if (isConnectionAvailable(conn)) {
@@ -125,7 +126,6 @@ public class MySQLConnectionPool {
         return conn;
     }
 
-
     private boolean isConnectionAvailable(Connection conn) {
         try (Statement st = conn.createStatement()) {
             st.executeQuery(SQL_VERIFYCONN);
@@ -134,28 +134,4 @@ public class MySQLConnectionPool {
             return false;
         }
     }
-
-//    // Just an Example
-//    public static void main(String[] args) throws SQLException {
-//        Connection conn = null;
-//        MySQLConnectionPool pool = new MySQLConnectionPool();
-//        try {
-//            conn = pool.getConnection();
-//            try (Statement statement = conn.createStatement())
-//            {
-//                ResultSet res = statement.executeQuery("show tables");
-//                System.out.println("There are below tables:");
-//                while (res.next()) {
-//                    String tblName = res.getString(1);
-//                    System.out.println(tblName);
-//                }
-//            }
-//        }
-//        finally {
-//            if (conn != null) {
-//                pool.returnConnection(conn);
-//            }
-//        }
-//    }
-
 }

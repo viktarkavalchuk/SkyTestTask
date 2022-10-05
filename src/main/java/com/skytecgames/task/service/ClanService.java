@@ -4,7 +4,7 @@ import com.skytecgames.task.dao.ClanDAOImpl;
 import com.skytecgames.task.dao.interfaces.ClanDAO;
 import com.skytecgames.task.model.Clan;
 
-public class ClanService {
+public class ClanService extends AbstractDB{
     private ClanDAO clans = ClanDAOImpl.getInstance();
     private static ClanService instance;
 
@@ -19,15 +19,17 @@ public class ClanService {
         if (gold < 0) {
             throw new IllegalArgumentException("Quantity cannot be less than 0");
         }
+        synchronized (getDbMutex()) {
         Clan clan = clans.getClan(clanId);
-        if ((clan.getGold() - gold) >= 0) {
-            clan.setGold(clan.getGold() - gold);
-            clans.save(clan);
-            System.out.println(clan.getName() + " paid " + gold + " gold");
-            return true;
-        } else {
-            System.out.println("Not enough gold in the treasury of the " + clan.getName() + " clan");
-            return false;
+            if ((clan.getGold() - gold) >= 0) {
+                clan.setGold(clan.getGold() - gold);
+                clans.save(clan);
+                System.out.println(clan.getName() + " paid " + gold + " gold");
+                return true;
+            } else {
+                System.out.println("Not enough gold in the treasury of the " + clan.getName() + " clan");
+                return false;
+            }
         }
     }
 

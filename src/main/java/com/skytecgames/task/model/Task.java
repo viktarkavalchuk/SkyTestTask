@@ -1,5 +1,8 @@
 package com.skytecgames.task.model;
 
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 public class Task {
     private long taskId; // id квеста
     private String taskName; // Описание квеста
@@ -24,7 +27,15 @@ public class Task {
     }
 
     public boolean execute() {
-        System.out.println("Task " + taskName + " started.");
+        Random rand = new Random();
+        Integer timeOut = rand.nextInt(1000);
+        System.out.println("Task " + taskName + " started");
+        try {
+            TimeUnit.MILLISECONDS.sleep(timeOut);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Task " + taskName + " ended for " + timeOut + "ms");
         return true;
     }
 }

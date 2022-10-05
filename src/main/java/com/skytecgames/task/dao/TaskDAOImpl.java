@@ -1,6 +1,5 @@
 package com.skytecgames.task.dao;
 
-import com.skytecgames.task.dao.interfaces.ClanDAO;
 import com.skytecgames.task.dao.interfaces.TaskDAO;
 import com.skytecgames.task.model.Task;
 import com.skytecgames.task.utils.MySQLConnectionPool;
@@ -11,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class TaskDAOImpl implements TaskDAO { // какой-то сервис с заданиями
-    private ClanDAO clanDAO = ClanDAOImpl.getInstance();
     private static TaskDAOImpl instance;
 
     public static TaskDAOImpl getInstance() {

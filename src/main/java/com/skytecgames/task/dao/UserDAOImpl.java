@@ -53,37 +53,19 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public synchronized boolean save(User user) {
-        User userUpdate = null;
+    public boolean save(User user) {
         MySQLConnectionPool pool = new MySQLConnectionPool();
-        String sql = "SELECT * FROM user WHERE name = '" + user.getName() + "'";
         try (Connection conn = pool.getConnection()) {
-            try (Statement statement = conn.createStatement()) {
-                ResultSet resultSet = statement.executeQuery(sql);
-                while (resultSet.next()) {
-                    Long idUser = resultSet.getLong(1);
-                    String name = resultSet.getString(2);
-                    Integer userGold = resultSet.getInt(3);
-                    userUpdate = new User(idUser, name, userGold);
-                }
-                userUpdate.setName(user.getName());
-                userUpdate.setUserGold(user.getUserGold());
-
                 PreparedStatement updateStatement = conn
-                        .prepareStatement("UPDATE user SET idUser = ?, name = ?, userGold = ? WHERE idUser = ?;");
-
-                updateStatement.setLong(1, userUpdate.getId());
-                updateStatement.setString(2, userUpdate.getName());
-                updateStatement.setInt(3, userUpdate.getUserGold());
-                updateStatement.setLong(4, userUpdate.getId());
+                        .prepareStatement("UPDATE user SET name = ?, userGold = ? WHERE idUser = ?;");
+                updateStatement.setString(1, user.getName());
+                updateStatement.setInt(2, user.getUserGold());
+                updateStatement.setLong(3, user.getId());
                 updateStatement.executeUpdate();
 
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
         return true;
     }
 }

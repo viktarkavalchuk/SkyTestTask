@@ -20,7 +20,7 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
-    public synchronized boolean logTransaction(Long userId, Long taskId, long clanId, int goldBefore, int goldAfter, int reason) {
+    public boolean logTransaction(Long userId, Long taskId, long clanId, int goldBefore, int goldAfter, int reason) {
         MySQLConnectionPool pool = new MySQLConnectionPool();
         try (Connection conn = pool.getConnection()) {
             PreparedStatement updateStatement = conn

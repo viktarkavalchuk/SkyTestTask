@@ -6,7 +6,7 @@ import com.skytecgames.task.model.Transaction;
 
 import java.util.ArrayList;
 
-public class TransactionService {
+public class TransactionService extends AbstractDB {
     private static TransactionService instance;
     private TransactionDAO transactionDAO = TransactionDAOImpl.getInstance();
 
