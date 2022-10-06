@@ -1,6 +1,5 @@
 package com.skytecgames.task;
 
-
 import com.skytecgames.task.menu.MenuController;
 
 public class main {

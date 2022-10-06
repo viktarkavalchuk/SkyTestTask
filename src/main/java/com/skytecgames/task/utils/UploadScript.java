@@ -11,8 +11,6 @@ public class UploadScript {
         MySQLConnectionPool pool = new MySQLConnectionPool();
         ResourceDatabasePopulator rdp = new ResourceDatabasePopulator();
         rdp.addScript(new ClassPathResource("Script_TEST_BASE.sql"));
-//        rdp.addScript(new ClassPathResource(
-//                "mysql-scripts/secondScript.sql"));
 
         try(Connection conn = pool.getConnection()) {
             rdp.populate(conn);
